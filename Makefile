@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-DOCKER_COMPOSE = docker-compose -p docker
+DOCKER_COMPOSE = docker-compose -p wine
 
-CONTAINER_NGINX = $$(docker container ls -f "name=docker_nginx" -q)
-CONTAINER_PHP = $$(docker container ls -f "name=docker_php" -q)
-CONTAINER_DB = $$(docker container ls -f "name=docker_database" -q)
+CONTAINER_NGINX = $$(docker container ls -f "name=wine_nginx" -q)
+CONTAINER_PHP = $$(docker container ls -f "name=wine_php" -q)
+CONTAINER_DB = $$(docker container ls -f "name=wine_database" -q)
 
 NGINX = docker exec -ti $(CONTAINER_NGINX)
 PHP = docker exec -ti $(CONTAINER_PHP)
@@ -41,8 +41,8 @@ build:
 ## Start containers
 start:
 	@$(DOCKER_COMPOSE) up -d
-	@echo "site is available here: https://docker.traefik.me"
-	@echo "admin is available here: https://docker.traefik.me/admin"
+	@echo "site is available here: https://wine.traefik.me"
+	@echo "admin is available here: https://wine.traefik.me/admin"
 
 ## Stop containers
 stop:
