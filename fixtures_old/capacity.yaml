@@ -1,0 +1,4 @@
+App\Entity\Capacity:
+  capacity_{1..6}:
+    name (unique): '<cityPrefix()>'
+    value: '<randomNumber(2)>'

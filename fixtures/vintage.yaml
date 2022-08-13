@@ -1,0 +1,3 @@
+App\Entity\Vintage:
+  appellation_{1800..2100}:
+    year: '<current()>'

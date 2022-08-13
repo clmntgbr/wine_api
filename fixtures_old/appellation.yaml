@@ -1,0 +1,3 @@
+App\Entity\Appellation:
+  appellation_{1..150}:
+    name (unique): '<catchPhrase()>'

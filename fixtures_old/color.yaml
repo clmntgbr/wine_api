@@ -1,0 +1,11 @@
+App\Entity\Color:
+  color_1:
+    name: 'Rouge'
+  color_2:
+    name: 'Blanc'
+  color_3:
+    name: 'Rosé'
+  color_4:
+    name: 'Ambré'
+  color_5:
+    name: 'Orange'

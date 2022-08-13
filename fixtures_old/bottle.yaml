@@ -1,0 +1,5 @@
+App\Entity\Bottle:
+  bottle_{1..150}:
+    cellar: '@cellar_1'
+    wine: '@wine_*'
+    capacity: '@capacity_*'

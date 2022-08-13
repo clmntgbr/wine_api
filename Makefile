@@ -93,13 +93,5 @@ migrate:
 ## Init project
 init: install update drop create migrate fixture
 
-npm-install: 
-	$(PHP) npm install
-
-npm-build: 
-	$(PHP) npm run build
-
-front: npm-install npm-build
-
-## Init project
+## Init db
 init-db: drop create migrate fixture

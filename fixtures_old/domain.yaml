@@ -1,0 +1,3 @@
+App\Entity\Domain:
+  domain_{1..150}:
+    name (unique): '<company()>'
