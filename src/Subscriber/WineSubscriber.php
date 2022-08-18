@@ -45,7 +45,8 @@ class WineSubscriber implements EventSubscriber
 
     private function format(Wine $wine): string
     {
-        return sprintf('%s, %s, %s, %s, %s, %s',
+        return sprintf(
+            '%s, %s, %s, %s, %s, %s',
             $wine->getName(),
             $wine->getAppellation()->getName(),
             $wine->getDomain()->getName(),

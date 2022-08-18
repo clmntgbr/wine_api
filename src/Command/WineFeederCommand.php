@@ -17,8 +17,7 @@ class WineFeederCommand extends Command
     public function __construct(
         private WineFeeder $wineFeeder,
         string             $name = null
-    )
-    {
+    ) {
         parent::__construct($name);
     }
 

@@ -21,12 +21,11 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class WineFeeder
 {
-    const URL = 'https://www.vinatis.com/recherche?country%5B%5D=France&type%5B%5D=Vin&tri=7';
+    public const URL = 'https://www.vinatis.com/recherche?country%5B%5D=France&type%5B%5D=Vin&tri=7';
 
     public function __construct(
         private EntityManagerInterface $em
-    )
-    {
+    ) {
     }
 
     public function parse()

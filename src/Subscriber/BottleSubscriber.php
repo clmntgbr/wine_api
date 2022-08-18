@@ -45,7 +45,8 @@ class BottleSubscriber implements EventSubscriber
 
     private function format(Bottle $bottle): string
     {
-        return sprintf('%s, %s, %s, %s, %s, %s, %s',
+        return sprintf(
+            '%s, %s, %s, %s, %s, %s, %s',
             $bottle->getWine()->getName(),
             $bottle->getWine()->getAppellation()->getName(),
             $bottle->getWine()->getDomain()->getName(),

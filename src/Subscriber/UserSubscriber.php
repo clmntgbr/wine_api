@@ -12,8 +12,7 @@ class UserSubscriber implements EventSubscriber
 {
     public function __construct(
         private UserPasswordHasherInterface $userPasswordHasher
-    )
-    {
+    ) {
     }
 
     public function getSubscribedEvents(): array

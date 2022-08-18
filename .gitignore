@@ -12,4 +12,6 @@
 /.env
 .env
 /config/jwt/*.pem
+public/node_modules
 ###< symfony/framework-bundle ###
+.DS_Store
