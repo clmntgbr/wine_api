@@ -9,7 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: VintageRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: ['get'],
+    itemOperations: ['get']
+)]
 class Vintage
 {
     #[ORM\Id, ORM\GeneratedValue, ORM\Column]
@@ -28,9 +31,9 @@ class Vintage
         return $this->id;
     }
 
-    public function getYear(): ?int
+    public function getYear(): ?string
     {
-        return $this->year;
+        return (string) $this->year;
     }
 
     public function setYear(int $year): self

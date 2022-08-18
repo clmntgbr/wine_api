@@ -1,0 +1,8 @@
+App\Entity\Status:
+  status_waiting_validation:
+    reference: '<(App\Lists\StatusReference::WAITING_VALIDATION)>'
+    label: 'Waiting for validation'
+
+  status_validated:
+    reference: '<(App\Lists\StatusReference::VALIDATED)>'
+    label: 'Validated'

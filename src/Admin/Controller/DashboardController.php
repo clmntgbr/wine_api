@@ -16,6 +16,7 @@ use App\Entity\Country;
 use App\Entity\Domain;
 use App\Entity\GrapeVariety;
 use App\Entity\Region;
+use App\Entity\Status;
 use App\Entity\StorageInstruction;
 use App\Entity\User;
 use App\Entity\Vintage;
@@ -45,8 +46,8 @@ class DashboardController extends AbstractDashboardController
 
     public function configureUserMenu(UserInterface $user): UserMenu
     {
-        return parent::configureUserMenu($user)
-            ->setName($user->getEmail());
+        /** @var User $user */
+        return parent::configureUserMenu($user)->setName($user->getEmail());
     }
 
     public function configureMenuItems(): iterable
@@ -72,5 +73,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Region', 'fas fa-list', Region::class);
         yield MenuItem::linkToCrud('Country', 'fas fa-list', Country::class);
         yield MenuItem::linkToCrud('User', 'fas fa-list', User::class);
+        yield MenuItem::linkToCrud('Status', 'fas fa-list', Status::class);
     }
 }

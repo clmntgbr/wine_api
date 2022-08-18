@@ -1,11 +1,11 @@
 App\Entity\Color:
   color_1:
-    name: 'Rouge'
+    name: 'Vin Rouge'
   color_2:
-    name: 'Blanc'
+    name: 'Vin Blanc'
   color_3:
-    name: 'Rosé'
+    name: 'Vin Rosé'
   color_4:
-    name: 'Ambré'
+    name: 'Vin Ambré'
   color_5:
-    name: 'Orange'
+    name: 'Vin Orange'

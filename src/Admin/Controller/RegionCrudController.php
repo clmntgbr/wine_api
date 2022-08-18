@@ -4,6 +4,7 @@ namespace App\Admin\Controller;
 
 use App\Entity\Region;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
@@ -19,6 +20,7 @@ class RegionCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideWhenCreating()->setDisabled(true),
             TextField::new('name')->setRequired(true),
+            AssociationField::new('status')->hideWhenCreating()->setRequired(true),
         ];
     }
 }

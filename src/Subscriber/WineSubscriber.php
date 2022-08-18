@@ -48,11 +48,11 @@ class WineSubscriber implements EventSubscriber
         return sprintf(
             '%s, %s, %s, %s, %s, %s',
             $wine->getName(),
+            $wine->getColor()->getName(),
             $wine->getAppellation()->getName(),
             $wine->getDomain()->getName(),
             $wine->getRegion()->getName(),
             $wine->getCountry()->getName(),
-            $wine->getColor()->getName(),
         );
     }
 }

@@ -21,6 +21,7 @@ class WineCrudController extends AbstractCrudController
             IdField::new('id')->hideWhenCreating()->setDisabled(true),
             TextField::new('name')->setRequired(true),
             TextField::new('formatName')->hideWhenCreating()->setDisabled(true),
+            AssociationField::new('status')->hideWhenCreating()->setRequired(true),
             AssociationField::new('appellation')->setRequired(true),
             AssociationField::new('domain')->setRequired(true),
             AssociationField::new('region')->setRequired(true),
