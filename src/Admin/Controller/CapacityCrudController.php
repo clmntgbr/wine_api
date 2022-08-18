@@ -19,8 +19,8 @@ class CapacityCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideWhenCreating()->setDisabled(true),
-            TextField::new('name'),
-            NumberField::new('value'),
+            TextField::new('name')->setRequired(true),
+            NumberField::new('value')->setRequired(true),
         ];
     }
 }

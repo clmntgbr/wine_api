@@ -4,6 +4,8 @@ namespace App\Admin\Controller;
 
 use App\Entity\StorageInstruction;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class StorageInstructionCrudController extends AbstractCrudController
 {
@@ -12,14 +14,11 @@ class StorageInstructionCrudController extends AbstractCrudController
         return StorageInstruction::class;
     }
 
-    /*
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
+            IdField::new('id')->hideWhenCreating()->setDisabled(true),
+            TextField::new('name')->setRequired(true),
         ];
     }
-    */
 }

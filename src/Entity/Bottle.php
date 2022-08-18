@@ -6,32 +6,36 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\BottleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BottleRepository::class)]
 #[ApiResource]
 class Bottle
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::STRING)]
+    #[ORM\Column(type: Types::STRING, nullable: false), Assert\NotNull(), Assert\NotBlank()]
     private ?string $formatName;
 
-    #[ORM\ManyToOne(targetEntity: Wine::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\ManyToOne(targetEntity: Wine::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
+    #[ORM\JoinColumn(nullable: false)]
     private Wine $wine;
 
-    #[ORM\ManyToOne(targetEntity: Capacity::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\ManyToOne(targetEntity: Capacity::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
+    #[ORM\JoinColumn(nullable: false)]
     private Capacity $capacity;
 
-    #[ORM\ManyToOne(targetEntity: BottleStopper::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\ManyToOne(targetEntity: BottleStopper::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
+    #[ORM\JoinColumn(nullable: false)]
     private BottleStopper $bottleStopper;
 
-    #[ORM\ManyToOne(targetEntity: StorageInstruction::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\ManyToOne(targetEntity: StorageInstruction::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
+    #[ORM\JoinColumn(nullable: false)]
     private StorageInstruction $storageInstruction;
 
-    #[ORM\ManyToOne(targetEntity: Cellar::class, fetch: 'EXTRA_LAZY', inversedBy: 'bottles')]
+    #[ORM\ManyToOne(targetEntity: Cellar::class, fetch: 'EXTRA_LAZY', inversedBy: 'bottles'), Assert\NotNull(), Assert\NotBlank()]
+    #[ORM\JoinColumn(nullable: false)]
     private Cellar $cellar;
 
     public function __toString(): string

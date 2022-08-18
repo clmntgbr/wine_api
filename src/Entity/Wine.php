@@ -8,44 +8,51 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: WineRepository::class)]
 #[ApiResource]
 class Wine
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::STRING)]
+    #[ORM\Column(type: Types::STRING, nullable: false), Assert\NotNull(), Assert\NotBlank()]
     private ?string $name;
 
-    #[ORM\Column(type: Types::STRING)]
+    #[ORM\Column(type: Types::STRING, nullable: false), Assert\NotNull(), Assert\NotBlank()]
     private ?string $formatName;
 
-    #[ORM\ManyToOne(targetEntity: Appellation::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\ManyToOne(targetEntity: Appellation::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
+    #[ORM\JoinColumn(nullable: false)]
     private Appellation $appellation;
 
-    #[ORM\ManyToOne(targetEntity: Domain::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\ManyToOne(targetEntity: Domain::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
+    #[ORM\JoinColumn(nullable: false)]
     private Domain $domain;
 
-    #[ORM\ManyToOne(targetEntity: Region::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\ManyToOne(targetEntity: Region::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
+    #[ORM\JoinColumn(nullable: false)]
     private Region $region;
 
-    #[ORM\ManyToOne(targetEntity: Country::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\ManyToOne(targetEntity: Country::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
+    #[ORM\JoinColumn(nullable: false)]
     private Country $country;
 
-    #[ORM\ManyToOne(targetEntity: Color::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\ManyToOne(targetEntity: Color::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
+    #[ORM\JoinColumn(nullable: false)]
     private Color $color;
 
-    #[ORM\ManyToOne(targetEntity: WineDetail::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\ManyToOne(targetEntity: WineDetail::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
+    #[ORM\JoinColumn(nullable: false)]
     private WineDetail $wineDetail;
 
-    #[ORM\ManyToOne(targetEntity: Abv::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\ManyToOne(targetEntity: Abv::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
+    #[ORM\JoinColumn(nullable: false)]
     private Abv $abv;
 
-    #[ORM\ManyToOne(targetEntity: Vintage::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\ManyToOne(targetEntity: Vintage::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
+    #[ORM\JoinColumn(nullable: false)]
     private Vintage $vintage;
 
     #[ORM\ManyToMany(targetEntity: Arrangement::class, cascade: ['persist'])]

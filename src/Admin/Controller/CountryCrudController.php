@@ -18,7 +18,7 @@ class CountryCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideWhenCreating()->setDisabled(true),
-            TextField::new('name'),
+            TextField::new('name')->setRequired(true),
         ];
     }
 }

@@ -7,15 +7,18 @@ use App\Repository\CellarRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CellarRepository::class)]
 #[ApiResource]
 class Cellar
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column(type: Types::STRING, nullable: true)]
+    private ?string $name;
 
     #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EXTRA_LAZY', inversedBy: 'cellars')]
     private User $user;
@@ -25,7 +28,7 @@ class Cellar
 
     public function __toString(): string
     {
-        return $this->user->getEmail();
+        return $this->name ?? $this->user->getEmail();
     }
 
     public function __construct()
@@ -76,6 +79,18 @@ class Cellar
                 $bottle->setCellar(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }

@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class CellarCrudController extends AbstractCrudController
 {
@@ -21,7 +22,8 @@ class CellarCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm(),
-            AssociationField::new('user'),
+            AssociationField::new('user')->setRequired(true),
+            TextField::new('name'),
             CollectionField::new('bottles')
                 ->setEntryIsComplex()
                 ->setDisabled(false)

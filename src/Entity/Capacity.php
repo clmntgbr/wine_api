@@ -6,20 +6,19 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CapacityRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CapacityRepository::class)]
 #[ApiResource]
 class Capacity
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::STRING)]
+    #[ORM\Column(type: Types::STRING, nullable: false), Assert\NotNull(), Assert\NotBlank()]
     private ?string $name;
 
-    #[ORM\Column(type: Types::FLOAT)]
+    #[ORM\Column(type: Types::FLOAT, nullable: false), Assert\NotNull(), Assert\NotBlank(), Assert\Positive()]
     private ?float $value;
 
     public function __toString(): string
