@@ -15,8 +15,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class), UniqueEntity('email', 'username')]
 #[ApiResource(
-    collectionOperations: ['get'],
-    itemOperations: ['get']
+    collectionOperations: ['get', 'post'],
+    itemOperations: ['get', 'patch', 'delete'],
+    normalizationContext: [
+        'groups' => ['read'],
+    ],
+    denormalizationContext: [
+        'groups' => ['write'],
+    ],
 )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {

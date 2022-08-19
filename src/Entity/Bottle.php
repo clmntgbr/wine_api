@@ -8,16 +8,26 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BottleRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: ['get', 'post'],
+    itemOperations: ['get', 'patch'],
+    normalizationContext: [
+        'groups' => ['read'],
+    ],
+    denormalizationContext: [
+        'groups' => ['write'],
+    ],
+)]
 class Bottle
 {
     use TimestampableEntity;
     use BlameableEntity;
 
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column, Groups('read')]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::STRING, nullable: false), Assert\NotNull(), Assert\NotBlank()]

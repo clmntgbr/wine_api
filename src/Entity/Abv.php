@@ -2,31 +2,39 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AbvRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AbvRepository::class)]
 #[ApiResource(
-    collectionOperations: ['get'],
-    itemOperations: ['get']
+    collectionOperations: ['get', 'post'],
+    itemOperations: ['get'],
+    normalizationContext: [
+        'groups' => ['read'],
+    ],
+    denormalizationContext: [
+        'groups' => ['write'],
+    ],
 )]
 class Abv
 {
     use TimestampableEntity;
     use BlameableEntity;
 
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column, Groups('read')]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::STRING, nullable: false), Assert\NotNull(), Assert\NotBlank()]
+    #[ORM\Column(type: Types::STRING, nullable: false), Assert\NotNull(), Assert\NotBlank(), Groups('read')]
     private ?string $name;
 
-    #[ORM\ManyToOne(targetEntity: Status::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\ManyToOne(targetEntity: Status::class, fetch: 'EXTRA_LAZY'), Groups('read')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Status $status;
 

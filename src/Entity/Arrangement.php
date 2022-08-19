@@ -12,8 +12,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ArrangementRepository::class)]
 #[ApiResource(
-    collectionOperations: ['get'],
-    itemOperations: ['get']
+    collectionOperations: ['get', 'post'],
+    itemOperations: ['get'],
+    normalizationContext: [
+        'groups' => ['read'],
+    ],
+    denormalizationContext: [
+        'groups' => ['write'],
+    ],
 )]
 class Arrangement
 {

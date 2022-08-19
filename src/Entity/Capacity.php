@@ -6,22 +6,29 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CapacityRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CapacityRepository::class)]
 #[ApiResource(
     collectionOperations: ['get'],
-    itemOperations: ['get']
+    itemOperations: ['get'],
+    normalizationContext: [
+        'groups' => ['read'],
+    ],
+    denormalizationContext: [
+        'groups' => ['write'],
+    ],
 )]
 class Capacity
 {
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column, Groups('read')]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::STRING, nullable: false), Assert\NotNull(), Assert\NotBlank()]
+    #[ORM\Column(type: Types::STRING, nullable: false), Assert\NotNull(), Assert\NotBlank(), Groups('read')]
     private ?string $name;
 
-    #[ORM\Column(type: Types::FLOAT, nullable: false), Assert\NotNull(), Assert\NotBlank(), Assert\Positive()]
+    #[ORM\Column(type: Types::FLOAT, nullable: false), Assert\NotNull(), Assert\NotBlank(), Assert\Positive(), Groups('read')]
     private ?float $value;
 
     public function __toString(): string

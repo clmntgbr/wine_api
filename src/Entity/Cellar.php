@@ -10,22 +10,32 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CellarRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: ['get', 'post'],
+    itemOperations: ['get', 'patch', 'delete'],
+    normalizationContext: [
+        'groups' => ['read'],
+    ],
+    denormalizationContext: [
+        'groups' => ['write'],
+    ],
+)]
 class Cellar
 {
     use TimestampableEntity;
     use BlameableEntity;
 
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column, Groups('read')]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::STRING, nullable: true)]
+    #[ORM\Column(type: Types::STRING, nullable: true), Groups('read')]
     private ?string $name;
 
-    #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EXTRA_LAZY', inversedBy: 'cellars')]
+    #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EXTRA_LAZY', inversedBy: 'cellars'), Groups('read')]
     private User $user;
 
     #[ORM\OneToMany(mappedBy: 'cellar', targetEntity: Bottle::class, cascade: ['persist'])]

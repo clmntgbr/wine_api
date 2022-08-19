@@ -2,20 +2,32 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\StatusRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: StatusRepository::class)]
+#[ApiResource(
+    collectionOperations: ['get'],
+    itemOperations: ['get'],
+    normalizationContext: [
+        'groups' => ['read'],
+    ],
+    denormalizationContext: [
+        'groups' => ['write'],
+    ],
+)]
 class Status
 {
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column, Groups('read')]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::STRING, length: 50)]
+    #[ORM\Column(type: Types::STRING, length: 50), Groups('read')]
     private string $reference;
 
-    #[ORM\Column(type: Types::STRING, length: 50)]
+    #[ORM\Column(type: Types::STRING, length: 50), Groups('read')]
     private string $label;
 
     public function __toString(): string
