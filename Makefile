@@ -93,5 +93,8 @@ migrate:
 ## Init project
 init: install update drop create migrate fixture
 
+jwt:
+	@$(DOCKER_COMPOSE) exec php sh -c 'set -e && apk add openssl && bin/console lexik:jwt:generate-keypair --overwrite'
+
 ## Init db
 init-db: drop create migrate fixture

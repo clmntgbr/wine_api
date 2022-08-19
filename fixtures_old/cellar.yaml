@@ -1,3 +1,0 @@
-App\Entity\Cellar:
-  cellar_1:
-    user: '@user_1*'

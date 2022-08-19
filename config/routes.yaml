@@ -5,3 +5,7 @@ controllers:
 admin:
   resource: ../src/Admin/
   type: attribute
+
+authentication_token:
+    path: /api/authenticate
+    methods: [ 'POST' ]
