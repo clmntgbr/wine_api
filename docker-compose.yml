@@ -53,7 +53,20 @@ services:
     volumes:
       - database_volume:/var/lib/mysql
 
+  node:
+    container_name: ${PROJECT_NAME}_node
+    image: node:16
+    volumes:
+      - application:/srv/app
+    working_dir: /srv/app
+    depends_on:
+      - php
+    networks:
+      - service
+    tty: true
+
 volumes:
+  application: {}
   database_volume: {}
   certs: {}
 
