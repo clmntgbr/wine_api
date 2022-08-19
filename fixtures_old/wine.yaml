@@ -1,8 +1,0 @@
-App\Entity\Wine:
-  wine_{1..1500}:
-    name: '<jobTitle()>'
-    appellation: '@appellation_*'
-    country: '@country_*'
-    domain: '@domain_*'
-    color: '@color_*'
-    region: '@region_*'

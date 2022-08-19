@@ -32,8 +32,11 @@
         "symfony/runtime": "6.1.*",
         "symfony/security-bundle": "6.1.*",
         "symfony/serializer": "6.1.*",
+        "symfony/translation": "6.1.*",
         "symfony/twig-bundle": "6.1.*",
+        "symfony/ux-live-component": "^2.3",
         "symfony/validator": "6.1.*",
+        "symfony/webpack-encore-bundle": "^1.15",
         "symfony/yaml": "6.1.*"
     },
     "config": {
