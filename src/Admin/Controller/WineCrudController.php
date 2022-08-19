@@ -5,6 +5,9 @@ namespace App\Admin\Controller;
 use App\Entity\Wine;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
@@ -18,9 +21,10 @@ class WineCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id')->hideWhenCreating()->setDisabled(true),
+            FormField::addPanel('Details'),
+            IdField::new('id')->hideWhenCreating()->setDisabled(),
             TextField::new('name')->setRequired(true),
-            TextField::new('formatName')->hideWhenCreating()->setDisabled(true),
+            TextField::new('formatName')->hideWhenCreating()->setDisabled(),
             AssociationField::new('status')->hideWhenCreating()->setRequired(true),
             AssociationField::new('appellation')->setRequired(true),
             AssociationField::new('domain')->setRequired(true),
@@ -35,6 +39,11 @@ class WineCrudController extends AbstractCrudController
             AssociationField::new('styles'),
             AssociationField::new('bios'),
             AssociationField::new('awards'),
+            FormField::addPanel('Metadata'),
+            DateTimeField::new('createdAt')->setDisabled(),
+            DateTimeField::new('updatedAt')->setDisabled()->hideOnIndex(),
+            Field::new('createdBy')->setDisabled(),
+            Field::new('updatedBy')->setDisabled()->hideOnIndex(),
         ];
     }
 }

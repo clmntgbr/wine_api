@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -16,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Wine
 {
     use TimestampableEntity;
+    use BlameableEntity;
 
     #[ORM\Id, ORM\GeneratedValue, ORM\Column]
     private ?int $id = null;
