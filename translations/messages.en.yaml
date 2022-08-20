@@ -1,0 +1,23 @@
+Dashboard: Dashboard
+Api Docs Api:
+Cellar: Cellar 
+Bottle: Bottle 
+BottleStopper: BottleStopper 
+StorageInstruction: StorageInstruction 
+Vintage: Vintage 
+Capacity: Capacity 
+Wine: Wine 
+WineDetail: WineDetail 
+Abv: Abv 
+Award: Award 
+Bio: Bio 
+Style: Style 
+GrapeVariety: GrapeVariety 
+Arrangement: Arrangement
+Color: Color 
+Appellation: Appellation 
+Domain: Domain 
+Region: Region 
+Country: Country 
+User: User 
+Status: Status 
