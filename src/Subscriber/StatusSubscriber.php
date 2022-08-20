@@ -15,8 +15,7 @@ class StatusSubscriber implements EventSubscriber
 {
     public function __construct(
         private StatusRepository $statusRepository
-    )
-    {
+    ) {
     }
 
     public function getSubscribedEvents(): array

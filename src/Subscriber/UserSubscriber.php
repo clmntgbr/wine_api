@@ -31,14 +31,14 @@ class UserSubscriber implements EventSubscriber
             return;
         }
 
-        if (null === $user->getPlainPassword()) {
-            throw new \Exception('PlainPassword is missing.');
+        if (null !== $user->getPlainPassword()) {
+            $user->setPassword($this->userPasswordHasher->hashPassword($user, $user->getPlainPassword()));
         }
 
         $user
-            ->setPassword($this->userPasswordHasher->hashPassword($user, $user->getPlainPassword()))
             ->setIsEnable(true)
-            ->eraseCredentials();
+            ->eraseCredentials()
+        ;
     }
 
     public function preUpdate(LifecycleEventArgs $args): void

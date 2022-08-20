@@ -61,7 +61,6 @@ class SecurityAuthenticator extends AbstractLoginFormAuthenticator
         }
 
         return new RedirectResponse($this->urlGenerator->generate('app_dashboard'));
-
     }
 
     protected function getLoginUrl(Request $request): string

@@ -24,6 +24,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
         'groups' => ['write'],
     ],
 )]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use TimestampableEntity;
@@ -50,6 +51,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $cellars;
 
     private ?string $plainPassword = null;
+
+    #[ORM\Column(type: 'boolean')]
+    private $isVerified = false;
 
     public function __construct()
     {
@@ -214,6 +218,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $cellar->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
 
         return $this;
     }

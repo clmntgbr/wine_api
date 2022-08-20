@@ -1,9 +1,12 @@
 parameters:
+    hostname: '%env(HOSTNAME)%'
 
 services:
   _defaults:
     autowire: true
     autoconfigure: true
+    bind:
+        $hostname: '%hostname%'
 
   App\:
     resource: '../src/'

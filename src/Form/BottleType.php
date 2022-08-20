@@ -15,8 +15,7 @@ class BottleType extends AbstractType
             ->add('id', null, [
                 'disabled' => true
             ])
-            ->add('wine', null, [
-            ]);
+            ->add('wine', null, []);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
