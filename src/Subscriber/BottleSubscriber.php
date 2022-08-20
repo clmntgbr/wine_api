@@ -3,6 +3,7 @@
 namespace App\Subscriber;
 
 use App\Entity\Bottle;
+use App\Service\Uuid;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
@@ -27,6 +28,10 @@ class BottleSubscriber implements EventSubscriber
 
         if (!$bottle instanceof Bottle) {
             return;
+        }
+
+        if (null === $bottle->getFamilyCode()) {
+            $bottle->setFamilyCode(Uuid::v4());
         }
 
         $bottle->setFormatName($this->format($bottle));

@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class BottleCrudController extends AbstractCrudController
@@ -29,6 +30,13 @@ class BottleCrudController extends AbstractCrudController
             AssociationField::new('cellar')->setRequired(true),
             AssociationField::new('bottleStopper')->setRequired(true),
             AssociationField::new('storageInstruction')->setRequired(true),
+            TextField::new('familyCode')->hideWhenCreating()->setDisabled(),
+            NumberField::new('purchasePrice'),
+            TextField::new('comment'),
+            Field::new('purchaseAt'),
+            Field::new('emptyAt'),
+            Field::new('peakAt'),
+            Field::new('alertAt'),
             FormField::addPanel('Metadata'),
             DateTimeField::new('createdAt')->setDisabled(),
             DateTimeField::new('updatedAt')->setDisabled()->hideOnIndex(),
