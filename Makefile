@@ -91,10 +91,16 @@ migrate:
 	$(PHP) bin/console doctrine:migration:migrate --no-interaction
 
 ## Init project
-init: install update drop create migrate fixture
+init: install update drop create migrate fixture npm-install npm-build jwt
 
 jwt:
 	@$(DOCKER_COMPOSE) exec php sh -c 'set -e && apk add openssl && bin/console lexik:jwt:generate-keypair --overwrite'
+
+npm-install:
+	$(PHP) npm install
+
+npm-build:
+	$(PHP) npm run build
 
 ## Init db
 init-db: drop create migrate fixture
