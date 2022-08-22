@@ -35,6 +35,9 @@ class Cellar
     #[ORM\Column(type: Types::STRING, nullable: true), Groups('read')]
     private ?string $name;
 
+    #[ORM\Column(type: Types::BOOLEAN), Groups('read')]
+    private ?bool $isDefault;
+
     #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EXTRA_LAZY', inversedBy: 'cellars'), Groups('read')]
     private User $user;
 
@@ -43,11 +46,12 @@ class Cellar
 
     public function __toString(): string
     {
-        return $this->name ?? $this->user->getEmail();
+        return $this->name ?? sprintf('%s, %s', $this->id, $this->user->getEmail());
     }
 
     public function __construct()
     {
+        $this->isDefault = false;
         $this->bottles = new ArrayCollection();
     }
 
@@ -106,6 +110,18 @@ class Cellar
     public function setName(?string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function isIsDefault(): ?bool
+    {
+        return $this->isDefault;
+    }
+
+    public function setIsDefault(bool $isDefault): self
+    {
+        $this->isDefault = $isDefault;
 
         return $this;
     }

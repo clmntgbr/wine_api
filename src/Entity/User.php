@@ -12,11 +12,12 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class), UniqueEntity('email', 'username')]
 #[ApiResource(
     collectionOperations: ['get', 'post'],
-    itemOperations: ['get', 'patch', 'delete'],
+    itemOperations: ['get', 'patch'],
     normalizationContext: [
         'groups' => ['read'],
     ],
@@ -29,25 +30,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use TimestampableEntity;
 
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: Types::INTEGER)]
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column(type: Types::INTEGER), Groups('read')]
     private ?int $id;
 
-    #[ORM\Column(type: Types::STRING, length: 200, unique: true)]
+    #[ORM\Column(type: Types::STRING, length: 200, unique: true), Groups('read')]
     private string $email;
 
-    #[ORM\Column(type: Types::STRING, length: 200)]
+    #[ORM\Column(type: Types::STRING, length: 200), Groups('read')]
     private string $username;
 
-    #[ORM\Column(type: Types::JSON)]
+    #[ORM\Column(type: Types::JSON), Groups('read')]
     private array $roles = [];
 
     #[ORM\Column(type: Types::STRING, length: 255)]
     private string $password;
 
-    #[ORM\Column(type: Types::BOOLEAN)]
+    #[ORM\Column(type: Types::BOOLEAN), Groups('read')]
     private bool $isEnable;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Cellar::class, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Cellar::class, cascade: ['persist']), Groups('read')]
     private Collection $cellars;
 
     private ?string $plainPassword = null;
@@ -232,5 +233,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->isVerified = $isVerified;
 
         return $this;
+    }
+
+    public function isIsVerified(): ?bool
+    {
+        return $this->isVerified;
     }
 }
