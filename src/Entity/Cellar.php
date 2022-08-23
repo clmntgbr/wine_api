@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     collectionOperations: ['get', 'post'],
     itemOperations: ['get', 'patch', 'delete'],
     normalizationContext: [
+        'skip_null_values' => false,
         'groups' => ['read'],
     ],
     denormalizationContext: [
@@ -32,13 +33,19 @@ class Cellar
     #[ORM\Id, ORM\GeneratedValue, ORM\Column, Groups('read')]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::STRING, nullable: true), Groups('read')]
+    #[ORM\Column(type: Types::STRING, nullable: true), Groups('read', 'write')]
     private ?string $name;
 
-    #[ORM\Column(type: Types::BOOLEAN), Groups('read')]
-    private ?bool $isDefault;
+    #[ORM\Column(type: Types::INTEGER), Groups('read', 'write')]
+    private ?int $row;
 
-    #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EXTRA_LAZY', inversedBy: 'cellars'), Groups('read')]
+    #[ORM\Column(type: Types::INTEGER), Groups('read', 'write')]
+    private ?int $clmn;
+
+    #[ORM\Column(type: Types::BOOLEAN), Groups('read')]
+    private ?bool $isActive;
+
+    #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EXTRA_LAZY', inversedBy: 'cellars')]
     private User $user;
 
     #[ORM\OneToMany(mappedBy: 'cellar', targetEntity: Bottle::class, cascade: ['persist'])]
@@ -51,7 +58,7 @@ class Cellar
 
     public function __construct()
     {
-        $this->isDefault = false;
+        $this->isActive = false;
         $this->bottles = new ArrayCollection();
     }
 
@@ -114,14 +121,43 @@ class Cellar
         return $this;
     }
 
-    public function isIsDefault(): ?bool
+    public function getIsActive(): ?bool
     {
-        return $this->isDefault;
+        return $this->isActive;
     }
 
-    public function setIsDefault(bool $isDefault): self
+    public function setIsActive(bool $isActive): self
     {
-        $this->isDefault = $isDefault;
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function isIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function getRow(): ?int
+    {
+        return $this->row;
+    }
+
+    public function setRow(int $row): self
+    {
+        $this->row = $row;
+
+        return $this;
+    }
+
+    public function getClmn(): ?int
+    {
+        return $this->clmn;
+    }
+
+    public function setClmn(int $clmn): self
+    {
+        $this->clmn = $clmn;
 
         return $this;
     }

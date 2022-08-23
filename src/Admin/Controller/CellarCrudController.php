@@ -7,6 +7,7 @@ use App\Form\BottleType;
 use App\Form\ItemType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
@@ -28,6 +29,7 @@ class CellarCrudController extends AbstractCrudController
             IdField::new('id')->hideOnForm(),
             AssociationField::new('user')->setRequired(true),
             TextField::new('name'),
+            BooleanField::new('isActive'),
             CollectionField::new('bottles')
                 ->setEntryIsComplex()
                 ->setDisabled(false)

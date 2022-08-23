@@ -1,13 +1,21 @@
 App\Entity\Cellar:
   cellar_1:
     user: '@user_1'
-    is_default: true
+    isActive: true
+    row: <numberBetween(10, 100)>
+    clmn: <numberBetween(10, 100)>
   cellar_2:
     user: '@user_2'
-    is_default: true
+    isActive: true
+    row: <numberBetween(10, 100)>
+    clmn: <numberBetween(10, 100)>
   cellar_3:
     user: '@user_1'
-    is_default: false
+    isActive: false
+    row: <numberBetween(10, 100)>
+    clmn: <numberBetween(10, 100)>
   cellar_4:
     user: '@user_2'
-    is_default: false
+    isActive: false
+    row: <numberBetween(10, 100)>
+    clmn: <numberBetween(10, 100)>
