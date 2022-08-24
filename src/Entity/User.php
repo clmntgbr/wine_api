@@ -201,6 +201,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->cellars;
     }
 
+    /** @return Cellar */
+    public function getActiveCellar()
+    {
+        return $this->getCellars()->filter(function(Cellar $cellar) {
+            return $cellar->getIsActive() === true;
+        });
+    }
+
     public function addCellar(Cellar $cellar): self
     {
         if (!$this->cellars->contains($cellar)) {

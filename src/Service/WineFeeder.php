@@ -7,8 +7,10 @@ use App\Entity\Appellation;
 use App\Entity\Arrangement;
 use App\Entity\Award;
 use App\Entity\Bio;
+use App\Entity\Bottle;
 use App\Entity\BottleStopper;
 use App\Entity\Capacity;
+use App\Entity\Color;
 use App\Entity\Country;
 use App\Entity\Domain;
 use App\Entity\GrapeVariety;
@@ -17,10 +19,13 @@ use App\Entity\Status;
 use App\Entity\StorageInstruction;
 use App\Entity\Style;
 use App\Entity\User;
+use App\Entity\Vintage;
+use App\Entity\Wine;
 use App\Entity\WineDetail;
 use App\Lists\StatusReference;
 use App\Repository\StatusRepository;
 use App\Repository\UserRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -32,7 +37,18 @@ class WineFeeder
     public function __construct(
         private EntityManagerInterface $em,
         private StatusRepository $statusRepository,
-        private UserRepository $userRepository
+        private UserRepository $userRepository,
+        private array $appellations = [],
+        private array $domains = [],
+        private array $regions = [],
+        private array $countries = [],
+        private array $abvs = [],
+        private array $wineDetails = [],
+        private array $vintages = [],  
+        private array $capacities = [], 
+        private array $storages = [],  
+        private array $stoppers = [],
+        private array $wines = [],
     ) {
     }
 
@@ -92,6 +108,8 @@ class WineFeeder
                     break;
             }
         }
+
+        $this->CreateWineAndBottles($user);
     }
 
     private function getCountries(SplFileInfo $fileInfo, Status $status, User $user)
@@ -105,6 +123,7 @@ class WineFeeder
             $country->setCreatedBy($user);
             $country->setUpdatedBy($user);
             $this->em->persist($country);
+            $this->countries[] = $country;
         }
         $this->em->flush();
     }
@@ -120,6 +139,7 @@ class WineFeeder
             $region->setCreatedBy($user);
             $region->setUpdatedBy($user);
             $this->em->persist($region);
+            $this->regions[] = $region;
         }
         $this->em->flush();
     }
@@ -135,6 +155,7 @@ class WineFeeder
             $appellation->setCreatedBy($user);
             $appellation->setUpdatedBy($user);
             $this->em->persist($appellation);
+            $this->appellations[] = $appellation;
         }
         $this->em->flush();
     }
@@ -148,6 +169,7 @@ class WineFeeder
             $capacity->setName(str_replace(' ', '', $key));
             $capacity->setValue((float)str_replace(' L', '', $key));
             $this->em->persist($capacity);
+            $this->capacities[] = $capacity;
         }
         $this->em->flush();
     }
@@ -163,6 +185,7 @@ class WineFeeder
             $abv->setCreatedBy($user);
             $abv->setUpdatedBy($user);
             $this->em->persist($abv);
+            $this->abvs[] = $abv;
         }
         $this->em->flush();
     }
@@ -178,6 +201,7 @@ class WineFeeder
             $entity->setCreatedBy($user);
             $entity->setUpdatedBy($user);
             $this->em->persist($entity);
+            $this->storages[] = $entity;
         }
         $this->em->flush();
     }
@@ -193,6 +217,7 @@ class WineFeeder
             $entity->setCreatedBy($user);
             $entity->setUpdatedBy($user);
             $this->em->persist($entity);
+            $this->stoppers[] = $entity;
         }
         $this->em->flush();
     }
@@ -208,6 +233,7 @@ class WineFeeder
             $entity->setCreatedBy($user);
             $entity->setUpdatedBy($user);
             $this->em->persist($entity);
+            $this->wineDetails[] = $entity;
         }
         $this->em->flush();
     }
@@ -298,7 +324,53 @@ class WineFeeder
             $entity->setCreatedBy($user);
             $entity->setUpdatedBy($user);
             $this->em->persist($entity);
+            $this->domains[] = $entity;
         }
         $this->em->flush();
+    }
+
+    private function CreateWineAndBottles(User $user)
+    {
+        $colors = $this->em->getRepository(Color::class)->findAll();
+        $vintages = $this->em->getRepository(Vintage::class)->findAll();
+        $users = $this->em->getRepository(User::class)->findAll();
+        
+        for ($i=0;$i<150;$i++) {
+            $wine = new Wine();
+            $wine->setName(sprintf('wine number %s', $i));
+            $wine->setAbv($this->abvs[rand(0, count($this->abvs)-1)]);
+            $wine->setAppellation($this->appellations[rand(0, count($this->appellations)-1)]);
+            $wine->setDomain($this->domains[rand(0, count($this->domains)-1)]);
+            $wine->setRegion($this->regions[rand(0, count($this->regions)-1)]);
+            $wine->setCountry($this->countries[rand(0, count($this->countries)-1)]);
+            $wine->setColor($colors[rand(0, count($colors)-1)]);
+            $wine->setWineDetail($this->wineDetails[rand(0, count($this->wineDetails)-1)]);
+            $wine->setVintage($vintages[rand(0, count($vintages)-1)]);
+            $this->em->persist($wine);
+            $this->wines[] = $wine;
+        }
+        $this->em->flush();
+
+        foreach ($users as $user) {
+            foreach ($user->getCellars() as $cellar) {
+                for ($i=0;$i<15;$i++) {
+                    $bottle = new Bottle();
+                    $bottle->setWine($this->wines[rand(0, count($this->wines)-1)]);
+                    $bottle->setBottleStopper($this->stoppers[rand(0, count($this->stoppers)-1)]);
+                    $bottle->setCapacity($this->capacities[rand(0, count($this->capacities)-1)]);
+                    $bottle->setCellar($cellar);
+                    $bottle->setPosition(sprintf('A0', rand(0,99)));
+                    $bottle->setStorageInstruction($this->storages[rand(0, count($this->storages)-1)]);
+                    $bottle->setPurchasePrice(random_int(0, 100));
+                    $bottle->setAlertAt(new \DateTimeImmutable('now'));
+                    $bottle->setEmptyAt(new \DateTimeImmutable('now'));
+                    $bottle->setPeakAt(new \DateTimeImmutable('now'));
+                    $bottle->setPurchaseAt(new \DateTimeImmutable('now'));
+                    $bottle->setComment(sprintf('comment number %s', $i));
+                    $this->em->persist($bottle);
+                }
+                $this->em->flush();
+            }
+        }
     }
 }

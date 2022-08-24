@@ -90,6 +90,9 @@ migration:
 migrate:
 	$(PHP) bin/console doctrine:migration:migrate --no-interaction
 
+feeder:
+	$(PHP) bin/console app:wine-feeder
+
 ## Init project
 init: install update drop create migrate fixture npm-install npm-build jwt
 

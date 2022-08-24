@@ -17,10 +17,10 @@ use Symfony\Component\Validator\Constraints as Assert;
     collectionOperations: ['get', 'post'],
     itemOperations: ['get', 'patch'],
     normalizationContext: [
-        'groups' => ['read'],
+        'groups' => ['read.bottle'],
     ],
     denormalizationContext: [
-        'groups' => ['write'],
+        'groups' => ['write.bottle'],
     ],
 )]
 class Bottle
@@ -28,50 +28,53 @@ class Bottle
     use TimestampableEntity;
     use BlameableEntity;
 
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column, Groups('read')]
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column, Groups('read.bottle')]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::STRING, nullable: false)]
+    #[ORM\Column(type: Types::STRING, nullable: false), Groups('read.bottle')]
     private ?string $formatName;
 
-    #[ORM\Column(type: Types::STRING, nullable: false)]
+    #[ORM\Column(type: Types::STRING, nullable: true), Groups('read.bottle')]
+    private ?string $position;
+
+    #[ORM\Column(type: Types::STRING, nullable: false), Groups('read.bottle')]
     private ?string $familyCode;
 
-    #[ORM\Column(type: Types::FLOAT, nullable: true)]
+    #[ORM\Column(type: Types::FLOAT, nullable: true), Groups('read.bottle')]
     private ?float $purchasePrice;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(type: Types::TEXT, nullable: true), Groups('read.bottle')]
     private ?string $comment;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true), Groups('read.bottle')]
     private ?DateTimeImmutable $purchaseAt;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true), Groups('read.bottle')]
     private ?DateTimeImmutable $emptyAt;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true), Groups('read.bottle')]
     private ?DateTimeImmutable $peakAt;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true), Groups('read.bottle')]
     private ?DateTimeImmutable $alertAt;
 
-    #[ORM\ManyToOne(targetEntity: Wine::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
+    #[ORM\ManyToOne(targetEntity: Wine::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank(), Groups('read.bottle')]
     #[ORM\JoinColumn(nullable: false)]
     private Wine $wine;
 
-    #[ORM\ManyToOne(targetEntity: Capacity::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
+    #[ORM\ManyToOne(targetEntity: Capacity::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank(), Groups('read.bottle')]
     #[ORM\JoinColumn(nullable: false)]
     private Capacity $capacity;
 
-    #[ORM\ManyToOne(targetEntity: BottleStopper::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
+    #[ORM\ManyToOne(targetEntity: BottleStopper::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank(), Groups('read.bottle')]
     #[ORM\JoinColumn(nullable: false)]
     private BottleStopper $bottleStopper;
 
-    #[ORM\ManyToOne(targetEntity: StorageInstruction::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
+    #[ORM\ManyToOne(targetEntity: StorageInstruction::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank(), Groups('read.bottle')]
     #[ORM\JoinColumn(nullable: false)]
     private StorageInstruction $storageInstruction;
 
-    #[ORM\ManyToOne(targetEntity: Cellar::class, fetch: 'EXTRA_LAZY', inversedBy: 'bottles'), Assert\NotNull(), Assert\NotBlank()]
+    #[ORM\ManyToOne(targetEntity: Cellar::class, fetch: 'EXTRA_LAZY', inversedBy: 'bottles'), Assert\NotNull(), Assert\NotBlank(), Groups('read.bottle')]
     #[ORM\JoinColumn(nullable: false)]
     private Cellar $cellar;
 
@@ -242,6 +245,18 @@ class Bottle
     public function setAlertAt(?\DateTimeImmutable $alertAt): self
     {
         $this->alertAt = $alertAt;
+
+        return $this;
+    }
+
+    public function getPosition(): ?string
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?string $position): self
+    {
+        $this->position = $position;
 
         return $this;
     }
