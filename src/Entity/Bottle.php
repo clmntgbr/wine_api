@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 use App\Repository\BottleRepository;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
@@ -17,11 +20,21 @@ use Symfony\Component\Validator\Constraints as Assert;
     collectionOperations: ['get', 'post'],
     itemOperations: ['get', 'patch'],
     normalizationContext: [
+        'skip_null_values' => false,
         'groups' => ['read.bottle'],
     ],
     denormalizationContext: [
         'groups' => ['write.bottle'],
     ],
+)]
+#[ApiFilter(
+    SearchFilter::class, properties: [
+    'id' => 'exact', 'position' => 'exact', 'wine' => 'exact']
+)]
+#[ApiFilter(
+    ExistsFilter::class, properties: [
+        'emptyAt'
+    ]
 )]
 class Bottle
 {
