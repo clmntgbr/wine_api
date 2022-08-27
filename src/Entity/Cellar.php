@@ -15,15 +15,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CellarRepository::class)]
 #[ApiResource(
+    order: ['id' => 'ASC'],
     collectionOperations: ['get', 'post'],
-    itemOperations: ['get', 'patch', 'delete'],
+    itemOperations: ['get', 'patch', 'delete', 'put'],
     normalizationContext: [
         'skip_null_values' => false,
         'groups' => ['read'],
-    ],
-    denormalizationContext: [
-        'groups' => ['write'],
-    ],
+    ]
 )]
 class Cellar
 {

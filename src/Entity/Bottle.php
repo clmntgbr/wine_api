@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\ExistsFilter;
 use App\Repository\BottleRepository;
@@ -18,22 +19,24 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: BottleRepository::class)]
 #[ApiResource(
     collectionOperations: ['get', 'post'],
-    itemOperations: ['get', 'patch'],
+    itemOperations: ['get', 'put', 'patch'],
     normalizationContext: [
         'skip_null_values' => false,
         'groups' => ['read.bottle'],
-    ],
-    denormalizationContext: [
-        'groups' => ['write.bottle'],
-    ],
+    ]
 )]
 #[ApiFilter(
     SearchFilter::class, properties: [
-    'id' => 'exact', 'position' => 'exact', 'wine' => 'exact']
+    'id' => 'exact', 'position' => 'exact', 'wine' => 'exact', 'cellar.id' => 'exact']
 )]
 #[ApiFilter(
     ExistsFilter::class, properties: [
         'emptyAt'
+    ]
+)]
+#[ApiFilter(
+    BooleanFilter::class, properties: [
+        'isLiked', 'cellar.isActive'
     ]
 )]
 class Bottle
@@ -58,6 +61,9 @@ class Bottle
 
     #[ORM\Column(type: Types::TEXT, nullable: true), Groups('read.bottle')]
     private ?string $comment;
+
+    #[ORM\Column(type: Types::BOOLEAN, nullable: false), Groups('read.bottle')]
+    private ?bool $isLiked;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true), Groups('read.bottle')]
     private ?DateTimeImmutable $purchaseAt;
@@ -93,6 +99,7 @@ class Bottle
 
     public function __construct()
     {
+        $this->isLiked = false;
         $this->familyCode = null;
     }
 
@@ -270,6 +277,18 @@ class Bottle
     public function setPosition(?string $position): self
     {
         $this->position = $position;
+
+        return $this;
+    }
+
+    public function isIsLiked(): ?bool
+    {
+        return $this->isLiked;
+    }
+
+    public function setIsLiked(bool $isLiked): self
+    {
+        $this->isLiked = $isLiked;
 
         return $this;
     }

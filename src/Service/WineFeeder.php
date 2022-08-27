@@ -362,9 +362,9 @@ class WineFeeder
                     $bottle->setPosition(sprintf('A0', rand(0,99)));
                     $bottle->setStorageInstruction($this->storages[rand(0, count($this->storages)-1)]);
                     $bottle->setPurchasePrice(random_int(0, 100));
-                    $bottle->setAlertAt(new \DateTimeImmutable('now'));
+                    /*$bottle->setAlertAt(new \DateTimeImmutable('now'));
                     $bottle->setPeakAt(new \DateTimeImmutable('now'));
-                    $bottle->setPurchaseAt(new \DateTimeImmutable('now'));
+                    $bottle->setPurchaseAt(new \DateTimeImmutable('now'));*/
                     $bottle->setComment(sprintf('comment number %s', $i));
                     $this->em->persist($bottle);
                 }

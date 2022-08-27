@@ -42,7 +42,7 @@ final class BottleExtension implements QueryCollectionExtensionInterface, QueryI
         }
 
         $rootAlias = $queryBuilder->getRootAliases()[0];
-        $queryBuilder->andWhere(sprintf('%s.cellar = :cellar', $rootAlias));
-        $queryBuilder->setParameter('cellar', $user->getActiveCellar());
+        $queryBuilder->andWhere(sprintf('%s.cellar IN (:cellar)', $rootAlias));
+        $queryBuilder->setParameter('cellar', $user->getCellars());
     }
 }
