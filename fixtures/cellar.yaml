@@ -2,20 +2,24 @@ App\Entity\Cellar:
   cellar_1:
     user: '@user_1'
     isActive: true
+    name: <sentence(3)>
     row: <numberBetween(10, 100)>
     clmn: <numberBetween(10, 100)>
   cellar_2:
     user: '@user_2'
     isActive: true
+    name: <sentence(3)>
     row: <numberBetween(10, 100)>
     clmn: <numberBetween(10, 100)>
   cellar_3:
     user: '@user_1'
     isActive: false
+    name: <sentence(3)>
     row: <numberBetween(10, 100)>
     clmn: <numberBetween(10, 100)>
   cellar_4:
     user: '@user_2'
     isActive: false
+    name: <sentence(3)>
     row: <numberBetween(10, 100)>
     clmn: <numberBetween(10, 100)>

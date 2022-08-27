@@ -351,6 +351,10 @@ class WineFeeder
         }
         $this->em->flush();
 
+
+        $isLiked = [true, false];
+        $date = [new \DateTimeImmutable('now'), null];
+        
         foreach ($users as $user) {
             foreach ($user->getCellars() as $cellar) {
                 for ($i=0;$i<15;$i++) {
@@ -362,9 +366,11 @@ class WineFeeder
                     $bottle->setPosition(sprintf('A0', rand(0,99)));
                     $bottle->setStorageInstruction($this->storages[rand(0, count($this->storages)-1)]);
                     $bottle->setPurchasePrice(random_int(0, 100));
-                    /*$bottle->setAlertAt(new \DateTimeImmutable('now'));
-                    $bottle->setPeakAt(new \DateTimeImmutable('now'));
-                    $bottle->setPurchaseAt(new \DateTimeImmutable('now'));*/
+                    $bottle->setIsLiked($isLiked[rand(0,1)]);
+                    $bottle->setEmptyAt($date[rand(0,1)]);
+                    $bottle->setAlertAt($date[rand(0,1)]);
+                    $bottle->setPeakAt($date[rand(0,1)]);
+                    $bottle->setPurchaseAt($date[rand(0,1)]);
                     $bottle->setComment(sprintf('comment number %s', $i));
                     $this->em->persist($bottle);
                 }

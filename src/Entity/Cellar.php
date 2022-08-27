@@ -11,6 +11,7 @@ use Doctrine\DBAL\Types\Types;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CellarRepository::class)]
@@ -31,13 +32,13 @@ class Cellar
     #[ORM\Id, ORM\GeneratedValue, ORM\Column, Groups('read')]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::STRING, nullable: true), Groups('read', 'write')]
+    #[ORM\Column(type: Types::STRING, nullable: false), Groups('read')]
     private ?string $name;
 
-    #[ORM\Column(type: Types::INTEGER), Groups('read', 'write')]
+    #[ORM\Column(type: Types::INTEGER), Groups('read')]
     private ?int $row;
 
-    #[ORM\Column(type: Types::INTEGER), Groups('read', 'write')]
+    #[ORM\Column(type: Types::INTEGER), Groups('read')]
     private ?int $clmn;
 
     #[ORM\Column(type: Types::BOOLEAN), Groups('read')]
@@ -83,6 +84,16 @@ class Cellar
     public function getBottles(): Collection
     {
         return $this->bottles;
+    }
+
+    #[SerializedName('bottlesInCellar'), Groups('read')]
+    public function getCountBottles(): int
+    {
+        $bottles = $this->getBottles()->filter(function(Bottle $bottle) {
+            return $bottle->getEmptyAt() === null;
+        });
+
+        return $bottles->count();
     }
 
     public function addBottle(Bottle $bottle): self

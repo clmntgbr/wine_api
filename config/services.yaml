@@ -15,6 +15,8 @@ services:
       - '../src/Entity/'
       - '../src/Kernel.php'
 
+  App\DataPersister\PostCellarCollectionDataPersister: ~
+
   App\Subscriber\BottleSubscriber:
     tags:
       - { name: doctrine.event_subscriber, connection: default }
