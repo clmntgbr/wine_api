@@ -47,7 +47,7 @@ class Cellar
     #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EXTRA_LAZY', inversedBy: 'cellars')]
     private User $user;
 
-    #[ORM\OneToMany(mappedBy: 'cellar', targetEntity: Bottle::class, cascade: ['persist'])]
+    #[ORM\OneToMany(mappedBy: 'cellar', targetEntity: Bottle::class, cascade: ['persist', 'remove'])]
     private Collection $bottles;
 
     public function __toString(): string

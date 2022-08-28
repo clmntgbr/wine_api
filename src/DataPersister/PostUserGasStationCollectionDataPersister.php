@@ -37,6 +37,10 @@ class PostCellarCollectionDataPersister implements ContextAwareDataPersisterInte
             return null;
         }
 
+        if ($user->getCellars()->count() === 0) {
+            $data->setIsActive(true);
+        }
+
         $data->setUser($user);
 
         $this->em->persist($data);
