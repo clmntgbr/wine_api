@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Cellar;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -37,6 +38,17 @@ class CellarRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function getCellarExceptId(int $id, User $user): ?Cellar
+    {
+        return $this->createQueryBuilder('c')
+        ->where('c.id != :id')
+        ->andWhere('c.user = :user')
+        ->setParameters(['id' => $id, 'user' => $user])
+        ->setMaxResults(1)
+        ->getQuery()
+        ->getOneOrNullResult();
     }
 
 //    /**

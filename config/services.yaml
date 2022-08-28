@@ -16,6 +16,7 @@ services:
       - '../src/Kernel.php'
 
   App\DataPersister\PostCellarCollectionDataPersister: ~
+  App\DataPersister\DeleteCellarItemDataPersister: ~
 
   App\Subscriber\BottleSubscriber:
     tags:
