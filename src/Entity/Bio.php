@@ -12,28 +12,20 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BioRepository::class)]
-#[ApiResource(
-    collectionOperations: ['get', 'post'],
-    itemOperations: ['get'],
-    normalizationContext: [
-        'groups' => ['read'],
-    ],
-    denormalizationContext: [
-        'groups' => ['write'],
-    ],
-)]
+#[ApiResource()]
 class Bio
 {
     use TimestampableEntity;
     use BlameableEntity;
 
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column, Groups('read')]
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::STRING, nullable: false), Assert\NotNull(), Assert\NotBlank(), Groups('read')]
+    #[ORM\Column(type: Types::STRING, nullable: false), Assert\NotNull(), Assert\NotBlank()]
+    #[Groups(['read_bottle_all'])]
     private ?string $name;
 
-    #[ORM\ManyToOne(targetEntity: Status::class, fetch: 'EXTRA_LAZY'), Groups('read')]
+    #[ORM\ManyToOne(targetEntity: Status::class, fetch: 'EXTRA_LAZY')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Status $status;
 

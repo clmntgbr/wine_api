@@ -8,19 +8,11 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AwardRepository::class)]
-#[ApiResource(
-    collectionOperations: ['get', 'post'],
-    itemOperations: ['get'],
-    normalizationContext: [
-        'groups' => ['read'],
-    ],
-    denormalizationContext: [
-        'groups' => ['write'],
-    ],
-)]
+#[ApiResource()]
 class Award
 {
     use TimestampableEntity;
@@ -30,6 +22,7 @@ class Award
     private ?int $id = null;
 
     #[ORM\Column(type: Types::STRING, nullable: false), Assert\NotNull(), Assert\NotBlank()]
+    #[Groups(['read_bottle_all'])]
     private ?string $name;
 
     #[ORM\ManyToOne(targetEntity: Status::class, fetch: 'EXTRA_LAZY')]

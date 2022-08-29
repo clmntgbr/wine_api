@@ -17,11 +17,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: CellarRepository::class)]
 #[ApiResource(
     order: ['id' => 'ASC'],
-    collectionOperations: ['get', 'post'],
+    collectionOperations: [
+        'get',
+        'post' => ['denormalization_context' => ['groups' => ['write_cellar']]],
+    ],
     itemOperations: [
         'get', 
         'delete', 
-        'put'
+        'put' => ['denormalization_context' => ['groups' => ['write_cellar']]],
     ],
     normalizationContext: [
         'skip_null_values' => false,
@@ -38,19 +41,19 @@ class Cellar
     private ?int $id = null;
 
     #[ORM\Column(type: Types::STRING, nullable: false)]
-    #[Groups("read_cellar")]
+    #[Groups(['read_cellar', 'write_cellar'])]
     private ?string $name;
 
     #[ORM\Column(type: Types::INTEGER)]
-    #[Groups('read_cellar')]
+    #[Groups(['read_cellar', 'write_cellar'])]
     private ?int $row;
 
     #[ORM\Column(type: Types::INTEGER)]
-    #[Groups('read_cellar')]
+    #[Groups(['read_cellar', 'write_cellar'])]
     private ?int $clmn;
 
     #[ORM\Column(type: Types::BOOLEAN)]
-    #[Groups('read_cellar')]
+    #[Groups(['read_cellar', 'write_cellar'])]
     private ?bool $isActive;
 
     #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EXTRA_LAZY', inversedBy: 'cellars')]

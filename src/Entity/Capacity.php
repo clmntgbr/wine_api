@@ -10,10 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CapacityRepository::class)]
-#[ApiResource(
-    collectionOperations: ['get'],
-    itemOperations: ['get']
-)]
+#[ApiResource()]
 class Capacity
 {
     #[ORM\Id, ORM\GeneratedValue, ORM\Column]

@@ -49,6 +49,11 @@ class WineFeeder
         private array $storages = [],  
         private array $stoppers = [],
         private array $wines = [],
+        private array $arrangements = [],
+        private array $awards = [],
+        private array $styles = [],
+        private array $grapeVarieties = [],
+        private array $bios = [],
     ) {
     }
 

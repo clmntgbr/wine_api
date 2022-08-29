@@ -27,43 +27,47 @@ class Wine
     private ?int $id = null;
 
     #[ORM\Column(type: Types::STRING, nullable: false), Assert\NotNull(), Assert\NotBlank()]
-    #[Groups('read_bottle')]
+    #[Groups(['read_bottle', 'read_bottle_all'])]
     private ?string $name;
 
     #[ORM\ManyToOne(targetEntity: Appellation::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups('read_bottle')]
+    #[Groups(['read_bottle', 'read_bottle_all'])]
     private Appellation $appellation;
 
     #[ORM\ManyToOne(targetEntity: Domain::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups('read_bottle')]
+    #[Groups(['read_bottle', 'read_bottle_all'])]
     private Domain $domain;
 
     #[ORM\ManyToOne(targetEntity: Region::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups('read_bottle')]
+    #[Groups(['read_bottle', 'read_bottle_all'])]
     private Region $region;
 
     #[ORM\ManyToOne(targetEntity: Country::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups('read_bottle')]
+    #[Groups(['read_bottle', 'read_bottle_all'])]
     private Country $country;
 
     #[ORM\ManyToOne(targetEntity: Color::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read_bottle_all'])]
     private Color $color;
 
     #[ORM\ManyToOne(targetEntity: WineDetail::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read_bottle_all'])]
     private WineDetail $wineDetail;
 
     #[ORM\ManyToOne(targetEntity: Abv::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read_bottle_all'])]
     private Abv $abv;
 
     #[ORM\ManyToOne(targetEntity: Vintage::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read_bottle_all'])]
     private Vintage $vintage;
 
     #[ORM\ManyToOne(targetEntity: Status::class, fetch: 'EXTRA_LAZY')]
@@ -71,18 +75,23 @@ class Wine
     private ?Status $status;
 
     #[ORM\ManyToMany(targetEntity: Arrangement::class, cascade: ['persist'])]
+    #[Groups(['read_bottle_all'])]
     private Collection $arrangements;
 
     #[ORM\ManyToMany(targetEntity: Award::class, cascade: ['persist'])]
+    #[Groups(['read_bottle_all'])]
     private Collection $awards;
 
     #[ORM\ManyToMany(targetEntity: Style::class, cascade: ['persist'])]
+    #[Groups(['read_bottle_all'])]
     private Collection $styles;
 
     #[ORM\ManyToMany(targetEntity: GrapeVariety::class, cascade: ['persist'])]
+    #[Groups(['read_bottle_all'])]
     private Collection $grapeVarieties;
 
     #[ORM\ManyToMany(targetEntity: Bio::class, cascade: ['persist'])]
+    #[Groups(['read_bottle_all'])]
     private Collection $bios;
 
     public function __construct()

@@ -25,7 +25,7 @@ class Appellation
     private ?int $id = null;
 
     #[ORM\Column(type: Types::STRING, nullable: false), Assert\NotNull(), Assert\NotBlank()]
-    #[Groups('read_bottle')]
+    #[Groups(['read_bottle', 'read_bottle_all'])]
     private ?string $name;
 
     #[ORM\ManyToOne(targetEntity: Status::class, fetch: 'EXTRA_LAZY')]

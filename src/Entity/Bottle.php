@@ -26,8 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     ],
     itemOperations: [
         'get' => ['normalization_context' => ['skip_null_values' => false, 'groups' => ['read_bottle_all']]], 
-        'put', 
-        'patch'
+        'put',
     ],
 )]
 #[ApiFilter(
@@ -50,72 +49,71 @@ class Bottle
     use BlameableEntity;
 
     #[ORM\Id, ORM\GeneratedValue, ORM\Column]
-    #[Groups('read_bottle', 'read_bottle_all')]
+    #[Groups(['read_bottle', 'read_bottle_all'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::STRING, nullable: true)]
-    #[Groups('read_bottle', 'read_bottle_all')]
+    #[Groups(['read_bottle', 'read_bottle_all'])]
     private ?string $position;
 
     #[ORM\Column(type: Types::STRING, nullable: false)]
-    #[Groups('read_bottle_all')]
+    #[Groups(['read_bottle_all'])]
     private ?string $familyCode;
 
     #[ORM\Column(type: Types::FLOAT, nullable: true)]
-    #[Groups('read_bottle_all')]
+    #[Groups(['read_bottle_all'])]
     private ?float $purchasePrice;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups('read_bottle_all')]
+    #[Groups(['read_bottle_all'])]
     private ?string $comment;
 
     #[ORM\Column(type: Types::BOOLEAN, nullable: false)]
-    #[Groups('read_bottle', 'read_bottle_all')]
+    #[Groups(['read_bottle', 'read_bottle_all'])]
     private ?bool $isLiked;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'd/m/Y'])]
-    #[Groups('read_bottle_all')]
+    #[Groups(['read_bottle_all'])]
     private ?DateTimeImmutable $purchaseAt;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'd/m/Y'])]
-    #[Groups('read_bottle_all')]
+    #[Groups(['read_bottle_all'])]
     private ?DateTimeImmutable $emptyAt;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'd/m/Y'])]
-    #[Groups('read_bottle_all')]
+    #[Groups(['read_bottle_all'])]
     private ?DateTimeImmutable $peakAt;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'd/m/Y'])]
-    #[Groups('read_bottle', 'read_bottle_all', 'read_bottle_all')]
+    #[Groups(['read_bottle', 'read_bottle_all'])]
     private ?DateTimeImmutable $alertAt;
 
     #[ORM\ManyToOne(targetEntity: Wine::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups('read_bottle', 'read_bottle_all')]
+    #[Groups(['read_bottle', 'read_bottle_all'])]
     private Wine $wine;
 
     #[ORM\ManyToOne(targetEntity: Capacity::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups('read_bottle', 'read_bottle_all')]
+    #[Groups(['read_bottle', 'read_bottle_all'])]
     private Capacity $capacity;
 
     #[ORM\ManyToOne(targetEntity: BottleStopper::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups('read_bottle_all')]
+    #[Groups(['read_bottle_all'])]
     private BottleStopper $bottleStopper;
 
     #[ORM\ManyToOne(targetEntity: StorageInstruction::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups('read_bottle_all')]
+    #[Groups(['read_bottle_all'])]
     private StorageInstruction $storageInstruction;
 
     #[ORM\ManyToOne(targetEntity: Cellar::class, fetch: 'EXTRA_LAZY', inversedBy: 'bottles'), Assert\NotNull(), Assert\NotBlank()]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups('read_bottle_all')]
     private Cellar $cellar;
 
     public function __construct()

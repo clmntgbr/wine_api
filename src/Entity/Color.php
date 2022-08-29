@@ -10,22 +10,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ColorRepository::class)]
-#[ApiResource(
-    collectionOperations: ['get'],
-    itemOperations: ['get'],
-    normalizationContext: [
-        'groups' => ['read'],
-    ],
-    denormalizationContext: [
-        'groups' => ['write'],
-    ],
-)]
+#[ApiResource()]
 class Color
 {
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column, Groups('read')]
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::STRING, nullable: false), Assert\NotNull(), Assert\NotBlank(), Groups('read')]
+    #[ORM\Column(type: Types::STRING, nullable: false), Assert\NotNull(), Assert\NotBlank()]
+    #[Groups(['read_bottle_all'])]
     private ?string $name;
 
     public function __toString(): string
