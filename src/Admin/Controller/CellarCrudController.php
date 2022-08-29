@@ -29,6 +29,8 @@ class CellarCrudController extends AbstractCrudController
             IdField::new('id')->hideOnForm(),
             AssociationField::new('user')->setRequired(true),
             TextField::new('name'),
+            Field::new('row'),
+            Field::new('clmn'),
             BooleanField::new('isActive'),
             CollectionField::new('bottles')
                 ->setEntryIsComplex()

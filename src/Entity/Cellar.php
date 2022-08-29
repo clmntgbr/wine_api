@@ -18,30 +18,39 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     order: ['id' => 'ASC'],
     collectionOperations: ['get', 'post'],
-    itemOperations: ['get', 'patch', 'delete', 'put'],
+    itemOperations: [
+        'get', 
+        'delete', 
+        'put'
+    ],
     normalizationContext: [
         'skip_null_values' => false,
-        'groups' => ['read'],
-    ]
+        'groups' => ['read_cellar'],
+    ],
 )]
 class Cellar
 {
     use TimestampableEntity;
     use BlameableEntity;
 
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column, Groups('read')]
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
+    #[Groups('read_cellar')]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::STRING, nullable: false), Groups('read')]
+    #[ORM\Column(type: Types::STRING, nullable: false)]
+    #[Groups("read_cellar")]
     private ?string $name;
 
-    #[ORM\Column(type: Types::INTEGER), Groups('read')]
+    #[ORM\Column(type: Types::INTEGER)]
+    #[Groups('read_cellar')]
     private ?int $row;
 
-    #[ORM\Column(type: Types::INTEGER), Groups('read')]
+    #[ORM\Column(type: Types::INTEGER)]
+    #[Groups('read_cellar')]
     private ?int $clmn;
 
-    #[ORM\Column(type: Types::BOOLEAN), Groups('read')]
+    #[ORM\Column(type: Types::BOOLEAN)]
+    #[Groups('read_cellar')]
     private ?bool $isActive;
 
     #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EXTRA_LAZY', inversedBy: 'cellars')]
