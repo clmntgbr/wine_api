@@ -15,25 +15,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     collectionOperations: ['get', 'post'],
     itemOperations: ['get'],
-    normalizationContext: [
-        'groups' => ['read'],
-    ],
-    denormalizationContext: [
-        'groups' => ['write'],
-    ],
 )]
 class Domain
 {
     use TimestampableEntity;
     use BlameableEntity;
 
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column, Groups('read')]
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::STRING, nullable: false), Assert\NotNull(), Assert\NotBlank(), Groups('read')]
+    #[ORM\Column(type: Types::STRING, nullable: false), Assert\NotNull(), Assert\NotBlank()]
+    #[Groups('read_bottle')]
     private ?string $name;
 
-    #[ORM\ManyToOne(targetEntity: Status::class, fetch: 'EXTRA_LAZY'), Groups('read')]
+    #[ORM\ManyToOne(targetEntity: Status::class, fetch: 'EXTRA_LAZY')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Status $status;
 

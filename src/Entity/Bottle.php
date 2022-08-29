@@ -13,17 +13,22 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: BottleRepository::class)]
 #[ApiResource(
-    collectionOperations: ['get', 'post'],
-    itemOperations: ['get', 'put', 'patch'],
-    normalizationContext: [
-        'skip_null_values' => false,
-        'groups' => ['read.bottle'],
-    ]
+    collectionOperations: [
+        'get' => ['normalization_context' => ['skip_null_values' => false, 'groups' => ['read_bottle']]], 
+        'post'
+    ],
+    itemOperations: [
+        'get' => ['normalization_context' => ['skip_null_values' => false, 'groups' => ['read.bottle.all']]], 
+        'put', 
+        'patch'
+    ],
 )]
 #[ApiFilter(
     SearchFilter::class, properties: [
@@ -44,56 +49,63 @@ class Bottle
     use TimestampableEntity;
     use BlameableEntity;
 
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column, Groups('read.bottle')]
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
+    #[Groups('read_bottle')]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::STRING, nullable: false), Groups('read.bottle')]
-    private ?string $formatName;
-
-    #[ORM\Column(type: Types::STRING, nullable: true), Groups('read.bottle')]
+    #[ORM\Column(type: Types::STRING, nullable: true)]
+    #[Groups('read_bottle')]
     private ?string $position;
 
-    #[ORM\Column(type: Types::STRING, nullable: false), Groups('read.bottle')]
+    #[ORM\Column(type: Types::STRING, nullable: false)]
     private ?string $familyCode;
 
-    #[ORM\Column(type: Types::FLOAT, nullable: true), Groups('read.bottle')]
+    #[ORM\Column(type: Types::FLOAT, nullable: true)]
     private ?float $purchasePrice;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true), Groups('read.bottle')]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comment;
 
-    #[ORM\Column(type: Types::BOOLEAN, nullable: false), Groups('read.bottle')]
+    #[ORM\Column(type: Types::BOOLEAN, nullable: false)]
+    #[Groups('read_bottle')]
     private ?bool $isLiked;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true), Groups('read.bottle')]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    #[Context([DateTimeNormalizer::FORMAT_KEY => 'd/m/Y'])]
     private ?DateTimeImmutable $purchaseAt;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true), Groups('read.bottle')]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    #[Context([DateTimeNormalizer::FORMAT_KEY => 'd/m/Y'])]
     private ?DateTimeImmutable $emptyAt;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true), Groups('read.bottle')]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    #[Context([DateTimeNormalizer::FORMAT_KEY => 'd/m/Y'])]
     private ?DateTimeImmutable $peakAt;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true), Groups('read.bottle')]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    #[Groups('read_bottle')]
+    #[Context([DateTimeNormalizer::FORMAT_KEY => 'd/m/Y'])]
     private ?DateTimeImmutable $alertAt;
 
-    #[ORM\ManyToOne(targetEntity: Wine::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank(), Groups('read.bottle')]
+    #[ORM\ManyToOne(targetEntity: Wine::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups('read_bottle')]
     private Wine $wine;
 
-    #[ORM\ManyToOne(targetEntity: Capacity::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank(), Groups('read.bottle')]
+    #[ORM\ManyToOne(targetEntity: Capacity::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups('read_bottle')]
     private Capacity $capacity;
 
-    #[ORM\ManyToOne(targetEntity: BottleStopper::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank(), Groups('read.bottle')]
+    #[ORM\ManyToOne(targetEntity: BottleStopper::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
     #[ORM\JoinColumn(nullable: false)]
     private BottleStopper $bottleStopper;
 
-    #[ORM\ManyToOne(targetEntity: StorageInstruction::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank(), Groups('read.bottle')]
+    #[ORM\ManyToOne(targetEntity: StorageInstruction::class, fetch: 'EXTRA_LAZY'), Assert\NotNull(), Assert\NotBlank()]
     #[ORM\JoinColumn(nullable: false)]
     private StorageInstruction $storageInstruction;
 
-    #[ORM\ManyToOne(targetEntity: Cellar::class, fetch: 'EXTRA_LAZY', inversedBy: 'bottles'), Assert\NotNull(), Assert\NotBlank(), Groups('read.bottle')]
+    #[ORM\ManyToOne(targetEntity: Cellar::class, fetch: 'EXTRA_LAZY', inversedBy: 'bottles'), Assert\NotNull(), Assert\NotBlank()]
     #[ORM\JoinColumn(nullable: false)]
     private Cellar $cellar;
 
@@ -105,7 +117,7 @@ class Bottle
 
     public function __toString(): string
     {
-        return $this->formatName;
+        return $this->wine?->getName();
     }
 
     public function getId(): ?int
@@ -133,18 +145,6 @@ class Bottle
     public function setCellar(?Cellar $cellar): self
     {
         $this->cellar = $cellar;
-
-        return $this;
-    }
-
-    public function getFormatName(): ?string
-    {
-        return $this->formatName;
-    }
-
-    public function setFormatName(string $formatName): self
-    {
-        $this->formatName = $formatName;
 
         return $this;
     }

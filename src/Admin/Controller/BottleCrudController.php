@@ -25,7 +25,6 @@ class BottleCrudController extends AbstractCrudController
         return [
             FormField::addPanel('Details'),
             IdField::new('id')->hideOnForm(),
-            TextField::new('formatName')->hideWhenCreating()->setDisabled(),
             AssociationField::new('wine')->setRequired(true)->hideOnIndex(),
             AssociationField::new('capacity')->setRequired(true)->hideOnIndex(),
             AssociationField::new('cellar')->setRequired(true),

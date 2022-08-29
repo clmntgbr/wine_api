@@ -28,8 +28,6 @@ class WineSubscriber implements EventSubscriber
         if (!$wine instanceof Wine) {
             return;
         }
-
-        $wine->setFormatName($this->format($wine));
     }
 
     public function preUpdate(LifecycleEventArgs $args): void
@@ -39,20 +37,5 @@ class WineSubscriber implements EventSubscriber
         if (!$wine instanceof Wine) {
             return;
         }
-
-        $wine->setFormatName($this->format($wine));
-    }
-
-    private function format(Wine $wine): string
-    {
-        return sprintf(
-            '%s, %s, %s, %s, %s, %s',
-            $wine->getName(),
-            $wine->getColor()->getName(),
-            $wine->getAppellation()->getName(),
-            $wine->getDomain()->getName(),
-            $wine->getRegion()->getName(),
-            $wine->getCountry()->getName(),
-        );
     }
 }

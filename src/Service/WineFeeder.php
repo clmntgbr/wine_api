@@ -337,7 +337,7 @@ class WineFeeder
         
         for ($i=0;$i<150;$i++) {
             $wine = new Wine();
-            $wine->setName(sprintf('wine number %s', $i));
+            $wine->setName(sprintf('Wine number %s', $i));
             $wine->setAbv($this->abvs[rand(0, count($this->abvs)-1)]);
             $wine->setAppellation($this->appellations[rand(0, count($this->appellations)-1)]);
             $wine->setDomain($this->domains[rand(0, count($this->domains)-1)]);

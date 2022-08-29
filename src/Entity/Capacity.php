@@ -12,23 +12,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: CapacityRepository::class)]
 #[ApiResource(
     collectionOperations: ['get'],
-    itemOperations: ['get'],
-    normalizationContext: [
-        'groups' => ['read'],
-    ],
-    denormalizationContext: [
-        'groups' => ['write'],
-    ],
+    itemOperations: ['get']
 )]
 class Capacity
 {
-    #[ORM\Id, ORM\GeneratedValue, ORM\Column, Groups('read')]
+    #[ORM\Id, ORM\GeneratedValue, ORM\Column]
+    #[Groups('read_bottle')]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::STRING, nullable: false), Assert\NotNull(), Assert\NotBlank(), Groups('read')]
+    #[ORM\Column(type: Types::STRING, nullable: false), Assert\NotNull(), Assert\NotBlank()]
+    #[Groups('read_bottle')]
     private ?string $name;
 
-    #[ORM\Column(type: Types::FLOAT, nullable: false), Assert\NotNull(), Assert\NotBlank(), Assert\Positive(), Groups('read')]
+    #[ORM\Column(type: Types::FLOAT, nullable: false), Assert\NotNull(), Assert\NotBlank()]
     private ?float $value;
 
     public function __toString(): string

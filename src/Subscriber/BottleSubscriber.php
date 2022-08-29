@@ -33,8 +33,6 @@ class BottleSubscriber implements EventSubscriber
         if (null === $bottle->getFamilyCode()) {
             $bottle->setFamilyCode(Uuid::v4());
         }
-
-        $bottle->setFormatName($this->format($bottle));
     }
 
     public function preUpdate(LifecycleEventArgs $args): void
@@ -44,21 +42,5 @@ class BottleSubscriber implements EventSubscriber
         if (!$bottle instanceof Bottle) {
             return;
         }
-
-        $bottle->setFormatName($this->format($bottle));
-    }
-
-    private function format(Bottle $bottle): string
-    {
-        return sprintf(
-            '%s, %s, %s, %s, %s, %s, %s',
-            $bottle->getWine()->getName(),
-            $bottle->getWine()->getAppellation()->getName(),
-            $bottle->getWine()->getDomain()->getName(),
-            $bottle->getWine()->getRegion()->getName(),
-            $bottle->getWine()->getCountry()->getName(),
-            $bottle->getWine()->getColor()->getName(),
-            $bottle->getCapacity()->getName(),
-        );
     }
 }
