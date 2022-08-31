@@ -98,7 +98,8 @@ class Cellar
         return $this->bottles;
     }
 
-    #[SerializedName('bottlesInCellar'), Groups('read')]
+    #[SerializedName('bottlesInCellar')]
+    #[Groups('read_cellar')]
     public function getCountBottles(): int
     {
         $bottles = $this->getBottles()->filter(function(Bottle $bottle) {
